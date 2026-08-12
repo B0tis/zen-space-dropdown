@@ -7,10 +7,10 @@
   },
   {
     "property": "mod.space-dropdown.max_height",
-    "label": "Expanded list max height (e.g. 70vh or 320px)",
+    "label": "Expanded list max height (e.g. 78vh or 420px)",
     "type": "string",
-    "defaultValue": "70vh",
-    "placeholder": "70vh"
+    "defaultValue": "78vh",
+    "placeholder": "78vh"
   },
   {
     "property": "mod.space-dropdown.show_names",

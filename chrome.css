@@ -190,21 +190,23 @@
       width: max-content !important;
       min-width: calc(100% - 12px) !important;
       max-width: min(60vw, 800px) !important;
-      max-height: var(--mod-space-dropdown-max_height, 70vh) !important;
+      max-height: var(--mod-space-dropdown-max_height, 78vh) !important;
       padding: 6px !important;
-      /*
-       * Zen's mouseover handler calls scrollIntoView() on the hovered Space and
-       * only passes `inline`, so `block` falls back to "start" and yanks a
-       * vertical scrollport to the top. `overflow: clip` is not a scroll
-       * container at all (unlike `hidden`), so there is nothing to yank.
-       * Long lists wrap into extra columns instead of scrolling.
-       */
-      overflow: clip !important;
-      flex-flow: column wrap !important;
-      align-content: flex-start !important;
+      flex-direction: column !important;
+      flex-wrap: nowrap !important;
       align-items: stretch !important;
-      column-gap: 6px !important;
-      row-gap: 3px !important;
+      gap: 2px !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      /*
+       * Zen's mouseover handler calls scrollIntoView() on the hovered Space but
+       * only passes `inline`, so `block` falls back to "start". Keep that
+       * instant rather than animated, and contain it to this panel.
+       */
+      scroll-behavior: auto !important;
+      overscroll-behavior: contain !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: color-mix(in srgb, currentColor 40%, transparent) transparent !important;
       /* Opaque so sidebar tabs do not bleed through the list */
       background-color: var(--arrowpanel-background, Menu) !important;
       color: var(--arrowpanel-color, MenuText) !important;
@@ -216,13 +218,28 @@
 
     #zen-workspaces-button:hover toolbarbutton,
     #zen-workspaces-button:focus-within toolbarbutton {
-      width: auto !important;
-      min-width: 176px !important;
-      max-width: 260px !important;
-      min-height: 32px !important;
-      padding: 6px 10px !important;
-      /* Keep Zen's own scroll hints from having any effect */
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: none !important;
+      min-height: 30px !important;
+      padding: 5px 9px !important;
+      flex: 0 0 auto !important;
       scroll-margin: 0 !important;
+    }
+
+    /*
+     * Put the current Space first in the expanded list. The list opens with the
+     * cursor on the active row, so scrollIntoView("start") resolves to offset 0
+     * and the panel no longer jumps when it opens.
+     */
+    #zen-workspaces-button:hover toolbarbutton[active="true"],
+    #zen-workspaces-button:focus-within toolbarbutton[active="true"] {
+      order: -1 !important;
+    }
+
+    /* Never re-order while the user is dragging Spaces around */
+    #zen-workspaces-button[reorder-mode="true"] toolbarbutton[active="true"] {
+      order: 0 !important;
     }
 
     .zen-current-workspace-indicator {
