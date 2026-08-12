@@ -1,0 +1,186 @@
+/*
+ * Space Dropdown — Zen Browser Mod
+ * Collapses the expanded-sidebar Space strip into a compact chip;
+ * expands to a vertical scrollable list on hover / focus-within.
+ */
+
+@media (-moz-pref("mod.space-dropdown.enabled")) {
+  :root[zen-sidebar-expanded]:not([zen-single-toolbar]) {
+    #zen-workspaces-button {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: stretch !important;
+      justify-content: flex-start !important;
+      gap: 2px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 2px !important;
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      overflow: hidden !important;
+      transition: max-height 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+      max-height: 42px !important;
+      background-color: color-mix(in srgb, currentColor 6%, transparent) !important;
+    }
+
+    /* Collapsed: only the active Space chip */
+    #zen-workspaces-button > toolbarbutton.subviewbutton:not([active="true"]) {
+      display: none !important;
+    }
+
+    #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"] {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 8px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      min-height: 32px !important;
+      margin: 0 !important;
+      padding: 4px 10px 4px 8px !important;
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      background-color: var(
+        --mod-space-dropdown-active_bg,
+        color-mix(in srgb, AccentColor 28%, transparent)
+      ) !important;
+      position: relative !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Chevron on the active chip when collapsed */
+    #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"]::after {
+      content: "" !important;
+      margin-left: auto !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-left: 4px solid transparent !important;
+      border-right: 4px solid transparent !important;
+      border-top: 5px solid currentColor !important;
+      opacity: 0.65 !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Active chip label while collapsed (when names enabled) */
+    @media (-moz-pref("mod.space-dropdown.show_names")) {
+      #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"]::before {
+        content: attr(tooltiptext) !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
+    }
+
+    /* Expanded list on hover / keyboard focus */
+    #zen-workspaces-button:hover,
+    #zen-workspaces-button:focus-within {
+      max-height: var(--mod-space-dropdown-max_height, 240px) !important;
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+      background-color: color-mix(in srgb, currentColor 8%, transparent) !important;
+      box-shadow: 0 8px 24px color-mix(in srgb, black 18%, transparent) !important;
+      z-index: 50 !important;
+    }
+
+    #zen-workspaces-button:hover > toolbarbutton.subviewbutton,
+    #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      gap: 8px !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      min-height: 30px !important;
+      margin: 0 !important;
+      padding: 4px 8px !important;
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      box-sizing: border-box !important;
+      position: relative !important;
+    }
+
+    /* Hide chevron while expanded */
+    #zen-workspaces-button:hover > toolbarbutton.subviewbutton[active="true"]::after,
+    #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton[active="true"]::after {
+      display: none !important;
+    }
+
+    /* Row labels when expanded */
+    @media (-moz-pref("mod.space-dropdown.show_names")) {
+      #zen-workspaces-button:hover > toolbarbutton.subviewbutton::before,
+      #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton::before {
+        content: attr(tooltiptext) !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
+
+      #zen-workspaces-button:hover > toolbarbutton.subviewbutton[active="true"]::before,
+      #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton[active="true"]::before {
+        font-weight: 600 !important;
+      }
+    }
+
+    #zen-workspaces-button > toolbarbutton.subviewbutton:hover {
+      background-color: color-mix(in srgb, currentColor 12%, transparent) !important;
+    }
+
+    #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"] {
+      background-color: var(
+        --mod-space-dropdown-active_bg,
+        color-mix(in srgb, AccentColor 28%, transparent)
+      ) !important;
+    }
+
+    #zen-workspaces-button > toolbarbutton.subviewbutton:focus-visible {
+      outline: 2px solid color-mix(in srgb, AccentColor 70%, transparent) !important;
+      outline-offset: 1px !important;
+    }
+
+    #zen-workspaces-button .zen-workspace-icon {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      flex-shrink: 0 !important;
+    }
+
+    /* Light polish for the current-space indicator (not the switcher) */
+    .zen-current-workspace-indicator {
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+    }
+  }
+
+  /* Right-click Space menu — readable list for many Spaces */
+  #zenWorkspaceMoreActions {
+    min-width: 220px !important;
+    max-height: min(70vh, 480px) !important;
+    overflow-y: auto !important;
+    padding: 4px !important;
+    border-radius: 10px !important;
+  }
+
+  #zenWorkspaceMoreActions .zen-workspace-context-menu-item {
+    border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+    min-height: 28px !important;
+    padding-block: 4px !important;
+  }
+
+  #zenWorkspaceMoreActions .zen-workspace-context-menu-item:hover,
+  #zenWorkspaceMoreActions .zen-workspace-context-menu-item[_moz-menuactive="true"] {
+    background-color: color-mix(in srgb, AccentColor 22%, transparent) !important;
+  }
+
+  #zenWorkspaceMoreActions .zen-workspace-context-menu-item[checked="true"] {
+    background-color: var(
+      --mod-space-dropdown-active_bg,
+      color-mix(in srgb, AccentColor 28%, transparent)
+    ) !important;
+    font-weight: 600 !important;
+  }
+}

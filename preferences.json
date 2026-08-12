@@ -1,0 +1,35 @@
+[
+  {
+    "property": "mod.space-dropdown.enabled",
+    "label": "Enable Space Dropdown",
+    "type": "checkbox",
+    "defaultValue": true
+  },
+  {
+    "property": "mod.space-dropdown.max_height",
+    "label": "Expanded list max height (e.g. 240px)",
+    "type": "string",
+    "defaultValue": "240px",
+    "placeholder": "240px"
+  },
+  {
+    "property": "mod.space-dropdown.show_names",
+    "label": "Show Space names in expanded list",
+    "type": "checkbox",
+    "defaultValue": true
+  },
+  {
+    "property": "mod.space-dropdown.chip_radius",
+    "label": "Chip / row border radius (e.g. 8px)",
+    "type": "string",
+    "defaultValue": "8px",
+    "placeholder": "8px"
+  },
+  {
+    "property": "mod.space-dropdown.active_bg",
+    "label": "Active Space background (hex/rgba)",
+    "type": "string",
+    "defaultValue": "color-mix(in srgb, AccentColor 28%, transparent)",
+    "placeholder": "color-mix(in srgb, AccentColor 28%, transparent)"
+  }
+]
