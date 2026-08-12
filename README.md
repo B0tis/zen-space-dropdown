@@ -52,3 +52,4 @@ Compact Spaces dropdown for Zen Browser’s **expanded sidebar**. Turns the crow
 ## License
 
 MIT
+
