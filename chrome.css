@@ -1,182 +1,216 @@
 /*
  * Space Dropdown — Zen Browser Mod
- * Collapses the expanded-sidebar Space strip into a compact chip;
- * expands to a wide vertical list (icon + name) on hover / focus-within.
+ *
+ * Collapses the expanded-sidebar Space strip into a compact chip that expands
+ * into a readable list (icon + name side by side) on hover / keyboard focus.
+ *
+ * Zen's own zen-workspaces.css fights this in three ways, all neutralised below:
+ *   1. .zen-workspace-icon is `position: absolute`, so it never sits next to text.
+ *   2. Inactive buttons get `filter: grayscale(1); opacity: 0.7`.
+ *   3. With [icons-overflow] the icon is scaled to 0 and ::after becomes a dot.
  */
 
 @media (-moz-pref("mod.space-dropdown.enabled")) {
   :root[zen-sidebar-expanded]:not([zen-single-toolbar]) {
-    /* Anchor so the flyout can escape the narrow foot slot */
+    /* Anchor for the flyout so it can escape the narrow footer slot */
     #zen-sidebar-foot-buttons {
       position: relative !important;
       overflow: visible !important;
     }
 
-    #zen-workspaces-button {
+    /* ---------------------------------------------------------------- shell */
+    #zen-workspaces-button,
+    #zen-workspaces-button[icons-overflow] {
       display: flex !important;
       flex-direction: column !important;
       align-items: stretch !important;
       justify-content: flex-start !important;
       gap: 2px !important;
       flex: 1 1 auto !important;
-      width: auto !important;
+      width: 100% !important;
       min-width: 0 !important;
       max-width: none !important;
+      height: auto !important;
+      max-height: 38px !important;
       box-sizing: border-box !important;
       padding: 2px !important;
-      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      container-type: normal !important;
       overflow: hidden !important;
-      transition:
-        max-height 160ms ease,
-        width 120ms ease,
-        box-shadow 160ms ease,
-        background-color 160ms ease,
-        padding 120ms ease;
-      max-height: 40px !important;
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
       background-color: color-mix(in srgb, currentColor 6%, transparent) !important;
     }
 
-    /* Collapsed: only the active Space chip */
-    #zen-workspaces-button > toolbarbutton.subviewbutton:not([active="true"]) {
-      display: none !important;
-    }
-
-    #zen-workspaces-button > toolbarbutton.subviewbutton {
-      -moz-box-align: center !important;
+    /* ----------------------------------------------------------------- rows */
+    #zen-workspaces-button toolbarbutton,
+    #zen-workspaces-button[icons-overflow] toolbarbutton {
       display: flex !important;
       flex-direction: row !important;
       align-items: center !important;
       justify-content: flex-start !important;
-      gap: 10px !important;
+      gap: 9px !important;
       width: 100% !important;
       min-width: 0 !important;
       max-width: none !important;
-      min-height: 32px !important;
       height: auto !important;
+      min-height: 32px !important;
       margin: 0 !important;
-      padding: 6px 10px !important;
-      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      padding: 5px 9px !important;
       box-sizing: border-box !important;
       position: relative !important;
+      /* Zen dims everything that is not the active Space */
+      filter: none !important;
+      opacity: 1 !important;
+      scale: 1 !important;
+      transform: none !important;
+      scroll-margin: 6px 0 !important;
+      border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
+      background-color: transparent !important;
     }
 
-    #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"] {
+    #zen-workspaces-button toolbarbutton:hover {
+      background-color: color-mix(in srgb, currentColor 14%, transparent) !important;
+    }
+
+    #zen-workspaces-button toolbarbutton[active="true"] {
       background-color: var(
         --mod-space-dropdown-active_bg,
-        color-mix(in srgb, AccentColor 28%, transparent)
+        color-mix(in srgb, AccentColor 30%, transparent)
       ) !important;
     }
 
-    /* Keep the icon as a fixed square on the left */
-    #zen-workspaces-button .zen-workspace-icon,
-    #zen-workspaces-button img.zen-workspace-icon {
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      flex: 0 0 22px !important;
-      width: 22px !important;
-      min-width: 22px !important;
-      max-width: 22px !important;
-      height: 22px !important;
-      font-size: 14px !important;
-      line-height: 1 !important;
-      overflow: hidden !important;
-      text-align: center !important;
+    #zen-workspaces-button toolbarbutton:focus-visible {
+      outline: 2px solid color-mix(in srgb, AccentColor 70%, transparent) !important;
+      outline-offset: -1px !important;
     }
 
-    /* Name to the right of the icon (default ON) */
-    #zen-workspaces-button > toolbarbutton.subviewbutton::after {
+    /* ----------------------------------------------- icon back into the flow */
+    #zen-workspaces-button toolbarbutton .zen-workspace-icon,
+    #zen-workspaces-button[icons-overflow] toolbarbutton .zen-workspace-icon {
+      position: static !important;
+      order: 1 !important;
+      flex: 0 0 auto !important;
+      opacity: 1 !important;
+      transform: none !important;
+      z-index: auto !important;
+      margin: 0 !important;
+      min-width: 18px !important;
+      height: 18px !important;
+      font-size: 14px !important;
+      line-height: 18px !important;
+      text-align: center !important;
+      overflow: hidden !important;
+    }
+
+    #zen-workspaces-button toolbarbutton img.zen-workspace-icon {
+      width: 16px !important;
+      min-width: 16px !important;
+      height: 16px !important;
+      margin-inline: 1px !important;
+      object-fit: contain !important;
+    }
+
+    /* Spaces without an icon keep Zen's dot, centred in the same 18px slot */
+    #zen-workspaces-button toolbarbutton .zen-workspace-icon[no-icon="true"],
+    #zen-workspaces-button[icons-overflow] toolbarbutton .zen-workspace-icon[no-icon="true"] {
+      width: 8px !important;
+      min-width: 8px !important;
+      height: 8px !important;
+      margin-inline: 5px !important;
+      border-radius: 50% !important;
+      line-height: 0 !important;
+    }
+
+    /* ------------------------------------------------------ name next to icon */
+    #zen-workspaces-button toolbarbutton::after,
+    #zen-workspaces-button[icons-overflow] toolbarbutton::after,
+    #zen-workspaces-button[icons-overflow] toolbarbutton:not([active="true"])::after {
       content: attr(tooltiptext) !important;
-      display: block !important;
+      order: 2 !important;
+      position: static !important;
+      inset: auto !important;
+      transform: none !important;
+      opacity: 1 !important;
       flex: 1 1 auto !important;
       min-width: 0 !important;
+      width: auto !important;
+      height: auto !important;
+      background: none !important;
+      border-radius: 0 !important;
+      filter: none !important;
       font-size: 12.5px !important;
       font-weight: 500 !important;
-      line-height: 1.2 !important;
+      line-height: 1.25 !important;
+      text-align: start !important;
       white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
-      text-align: start !important;
-      opacity: 0.95 !important;
     }
 
-    #zen-workspaces-button > toolbarbutton.subviewbutton[active="true"]::after {
-      font-weight: 600 !important;
-    }
-
-    /* Collapsed chevron — trailing glyph after the name */
-    #zen-workspaces-button:not(:hover):not(:focus-within)
-      > toolbarbutton.subviewbutton[active="true"]::after {
-      content: attr(tooltiptext) !important;
-      /* Keep name; chevron drawn via background so icon|name stay clean */
-      padding-inline-end: 14px !important;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23ffffff' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>") !important;
-      background-repeat: no-repeat !important;
-      background-position: right center !important;
-      background-size: 10px 6px !important;
+    #zen-workspaces-button toolbarbutton[active="true"]::after {
+      font-weight: 650 !important;
     }
 
     @media not (-moz-pref("mod.space-dropdown.show_names")) {
-      #zen-workspaces-button > toolbarbutton.subviewbutton::after {
-        content: none !important;
+      #zen-workspaces-button toolbarbutton::after {
+        content: "" !important;
         display: none !important;
-        padding-inline-end: 0 !important;
-        background-image: none !important;
       }
     }
 
-    /* -------- Expanded flyout: break out of the narrow foot slot -------- */
+    /* ------------------------------------------------------- collapsed state */
+    #zen-workspaces-button:not(:hover):not(:focus-within) toolbarbutton:not([active="true"]) {
+      display: none !important;
+    }
+
+    /* Chevron hint on the collapsed chip */
+    #zen-workspaces-button:not(:hover):not(:focus-within) toolbarbutton[active="true"]::before {
+      content: "" !important;
+      order: 3 !important;
+      flex: 0 0 auto !important;
+      margin-inline-start: auto !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-left: 4px solid transparent !important;
+      border-right: 4px solid transparent !important;
+      border-top: 5px solid currentColor !important;
+      opacity: 0.55 !important;
+    }
+
+    /* -------------------------------------------------------- expanded flyout */
     #zen-workspaces-button:hover,
-    #zen-workspaces-button:focus-within {
+    #zen-workspaces-button:focus-within,
+    #zen-workspaces-button[icons-overflow]:hover,
+    #zen-workspaces-button[icons-overflow]:focus-within {
       position: absolute !important;
       z-index: 9999 !important;
-      left: 8px !important;
-      right: 8px !important;
-      bottom: 4px !important;
+      inset-inline: 6px !important;
+      bottom: 2px !important;
       width: auto !important;
-      min-width: 200px !important;
-      max-width: none !important;
-      max-height: var(--mod-space-dropdown-max_height, 280px) !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
+      min-width: 190px !important;
+      max-height: var(--mod-space-dropdown-max_height, 70vh) !important;
       padding: 6px !important;
       gap: 3px !important;
-      background-color: color-mix(in srgb, Canvas 92%, transparent) !important;
-      backdrop-filter: blur(16px) !important;
+      overflow-x: hidden !important;
+      overflow-y: auto !important;
+      /* Opaque so sidebar tabs do not bleed through the list */
+      background-color: var(--arrowpanel-background, Menu) !important;
+      color: var(--arrowpanel-color, MenuText) !important;
+      border-radius: calc(var(--mod-space-dropdown-chip_radius, 8px) + 4px) !important;
       box-shadow:
-        0 10px 28px color-mix(in srgb, black 28%, transparent),
-        0 0 0 1px color-mix(in srgb, currentColor 12%, transparent) !important;
-      border-radius: calc(var(--mod-space-dropdown-chip_radius, 8px) + 2px) !important;
+        0 14px 34px rgba(0, 0, 0, 0.38),
+        0 0 0 1px color-mix(in srgb, currentColor 14%, transparent) !important;
+      /* Zen scrolls a hovered Space into view; keep that instant, not animated */
+      scroll-behavior: auto !important;
+      overscroll-behavior: contain !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: color-mix(in srgb, currentColor 35%, transparent) transparent !important;
+      scrollbar-gutter: stable !important;
     }
 
-    #zen-workspaces-button:hover > toolbarbutton.subviewbutton,
-    #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton {
-      display: flex !important;
-      flex-direction: row !important;
-      align-items: center !important;
-      justify-content: flex-start !important;
-      gap: 10px !important;
-      width: 100% !important;
-      min-width: 0 !important;
-      max-width: none !important;
+    #zen-workspaces-button:hover toolbarbutton,
+    #zen-workspaces-button:focus-within toolbarbutton {
       min-height: 34px !important;
-      padding: 7px 10px !important;
-    }
-
-    /* Clear collapsed chevron styling while expanded */
-    #zen-workspaces-button:hover > toolbarbutton.subviewbutton[active="true"]::after,
-    #zen-workspaces-button:focus-within > toolbarbutton.subviewbutton[active="true"]::after {
-      padding-inline-end: 0 !important;
-      background-image: none !important;
-    }
-
-    #zen-workspaces-button > toolbarbutton.subviewbutton:hover {
-      background-color: color-mix(in srgb, currentColor 12%, transparent) !important;
-    }
-
-    #zen-workspaces-button > toolbarbutton.subviewbutton:focus-visible {
-      outline: 2px solid color-mix(in srgb, AccentColor 70%, transparent) !important;
-      outline-offset: 1px !important;
+      padding: 6px 10px !important;
     }
 
     .zen-current-workspace-indicator {
@@ -184,10 +218,10 @@
     }
   }
 
-  /* Right-click Space menu — readable list for many Spaces */
+  /* ------------------------------ right-click Space menu, matching treatment */
   #zenWorkspaceMoreActions {
     min-width: 240px !important;
-    max-height: min(70vh, 480px) !important;
+    max-height: min(70vh, 520px) !important;
     overflow-y: auto !important;
     padding: 6px !important;
     border-radius: 10px !important;
@@ -208,7 +242,7 @@
   #zenWorkspaceMoreActions .zen-workspace-context-menu-item[checked="true"] {
     background-color: var(
       --mod-space-dropdown-active_bg,
-      color-mix(in srgb, AccentColor 28%, transparent)
+      color-mix(in srgb, AccentColor 30%, transparent)
     ) !important;
     font-weight: 600 !important;
   }

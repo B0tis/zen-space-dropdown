@@ -63,7 +63,7 @@ $entry = [pscustomobject]@{
   readme      = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/README.md"
   image       = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/preview.png"
   author      = "B0tis"
-  version     = "1.1.1"
+  version     = "1.2.0"
   tags        = @("workspaces", "sidebar", "spaces")
   createdAt   = "2026-08-12"
   updatedAt   = (Get-Date -Format "yyyy-MM-dd")
@@ -96,7 +96,7 @@ $userJs = Join-Path $profile "user.js"
 $prefLines = @(
   'user_pref("mod.space-dropdown.enabled", true);',
   'user_pref("mod.space-dropdown.show_names", true);',
-  'user_pref("mod.space-dropdown.max_height", "280px");',
+  'user_pref("mod.space-dropdown.max_height", "70vh");',
   'user_pref("mod.space-dropdown.chip_radius", "8px");'
 )
 $kept = @()
@@ -107,3 +107,4 @@ Set-Content -Path $userJs -Value (($kept + $prefLines) -join "`n") -Encoding UTF
 
 Write-Host "Installed Space Dropdown."
 Write-Host "Restart Zen, or open Settings -> Mods and toggle the mod off/on."
+

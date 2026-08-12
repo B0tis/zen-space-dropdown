@@ -39,7 +39,7 @@ Then restart Zen, or open **Settings → Mods** and toggle **Space Dropdown** of
 | Preference | Type | Default | Purpose |
 |---|---|---|---|
 | `mod.space-dropdown.enabled` | checkbox | `true` | Master toggle |
-| `mod.space-dropdown.max_height` | string | `280px` | Max height of expanded list |
+| `mod.space-dropdown.max_height` | string | `70vh` | Max height of expanded list |
 | `mod.space-dropdown.show_names` | checkbox | `true` | Show Space names |
 | `mod.space-dropdown.chip_radius` | string | `8px` | Corner radius |
 | `mod.space-dropdown.active_bg` | string | Accent mix | Active Space background |
@@ -54,3 +54,4 @@ Then restart Zen, or open **Settings → Mods** and toggle **Space Dropdown** of
 ## License
 
 MIT
+
