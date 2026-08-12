@@ -11,6 +11,19 @@
  */
 
 @media (-moz-pref("mod.space-dropdown.enabled")) {
+  :root {
+    --sd-row-h: 30px;
+    --sd-row-gap: 2px;
+    --sd-col-rows: 15;
+    --sd-col-width: 196px;
+  }
+
+  @media (max-height: 820px) {
+    :root {
+      --sd-col-rows: 10;
+    }
+  }
+
   :root[zen-sidebar-expanded]:not([zen-single-toolbar]) {
     /* Anchor for the flyout so it can escape the narrow footer slot */
     #zen-sidebar-foot-buttons {
@@ -190,19 +203,20 @@
       width: max-content !important;
       min-width: calc(100% - 12px) !important;
       max-width: min(60vw, 800px) !important;
-      max-height: var(--mod-space-dropdown-max_height, 78vh) !important;
+      /*
+       * The floor matters: Zen stores string prefs as inline :root variables and
+       * only seeds a default when the pref does not exist yet, so a stale value
+       * from an older version would otherwise shrink the panel.
+       */
+      max-height: max(var(--mod-space-dropdown-max_height, 78vh), 62vh) !important;
+      height: auto !important;
       padding: 6px !important;
       flex-direction: column !important;
       flex-wrap: nowrap !important;
       align-items: stretch !important;
-      gap: 2px !important;
+      gap: var(--sd-row-gap) !important;
       overflow-x: hidden !important;
       overflow-y: auto !important;
-      /*
-       * Zen's mouseover handler calls scrollIntoView() on the hovered Space but
-       * only passes `inline`, so `block` falls back to "start". Keep that
-       * instant rather than animated, and contain it to this panel.
-       */
       scroll-behavior: auto !important;
       overscroll-behavior: contain !important;
       scrollbar-width: thin !important;
@@ -221,10 +235,52 @@
       width: 100% !important;
       min-width: 0 !important;
       max-width: none !important;
-      min-height: 30px !important;
-      padding: 5px 9px !important;
+      /* Fixed row height keeps the column-wrap maths below predictable */
+      height: var(--sd-row-h) !important;
+      min-height: var(--sd-row-h) !important;
+      padding: 0 9px !important;
       flex: 0 0 auto !important;
       scroll-margin: 0 !important;
+    }
+
+    /*
+     * Zen's mouseover handler calls scrollIntoView() on the hovered Space and
+     * only passes `inline`, so `block` falls back to "start" and yanks any
+     * vertical scrollport to the top. CSS cannot tell a programmatic scroll
+     * apart from a wheel scroll, so instead the panel is sized to leave no
+     * vertical scroll range: once the list is longer than one column it wraps
+     * into further columns and scrolls on the inline axis, which is the axis
+     * Zen's handler was written for ("nearest" leaves a visible row alone).
+     */
+    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(16)) {
+      height: calc(var(--sd-col-rows) * (var(--sd-row-h) + var(--sd-row-gap)) + 12px) !important;
+      max-height: none !important;
+      flex-wrap: wrap !important;
+      align-content: flex-start !important;
+      overflow-x: auto !important;
+      overflow-y: clip !important;
+    }
+
+    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(16))
+      toolbarbutton {
+      width: var(--sd-col-width) !important;
+    }
+
+    /* Shorter windows cannot fit a 15 row column */
+    @media (max-height: 820px) {
+      #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(11)) {
+        height: calc(var(--sd-col-rows) * (var(--sd-row-h) + var(--sd-row-gap)) + 12px) !important;
+        max-height: none !important;
+        flex-wrap: wrap !important;
+        align-content: flex-start !important;
+        overflow-x: auto !important;
+        overflow-y: clip !important;
+      }
+
+      #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(11))
+        toolbarbutton {
+        width: var(--sd-col-width) !important;
+      }
     }
 
     /*
