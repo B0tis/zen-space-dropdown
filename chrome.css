@@ -35,7 +35,8 @@
       box-sizing: border-box !important;
       padding: 2px !important;
       container-type: normal !important;
-      overflow: hidden !important;
+      /* `clip` instead of `hidden`: never becomes a programmatic scroll target */
+      overflow: clip !important;
       border-radius: var(--mod-space-dropdown-chip_radius, 8px) !important;
       background-color: color-mix(in srgb, currentColor 6%, transparent) !important;
     }
@@ -183,15 +184,27 @@
     #zen-workspaces-button[icons-overflow]:focus-within {
       position: absolute !important;
       z-index: 9999 !important;
-      inset-inline: 6px !important;
+      inset-inline-start: 6px !important;
+      inset-inline-end: auto !important;
       bottom: 2px !important;
-      width: auto !important;
-      min-width: 190px !important;
+      width: max-content !important;
+      min-width: calc(100% - 12px) !important;
+      max-width: min(60vw, 800px) !important;
       max-height: var(--mod-space-dropdown-max_height, 70vh) !important;
       padding: 6px !important;
-      gap: 3px !important;
-      overflow-x: hidden !important;
-      overflow-y: auto !important;
+      /*
+       * Zen's mouseover handler calls scrollIntoView() on the hovered Space and
+       * only passes `inline`, so `block` falls back to "start" and yanks a
+       * vertical scrollport to the top. `overflow: clip` is not a scroll
+       * container at all (unlike `hidden`), so there is nothing to yank.
+       * Long lists wrap into extra columns instead of scrolling.
+       */
+      overflow: clip !important;
+      flex-flow: column wrap !important;
+      align-content: flex-start !important;
+      align-items: stretch !important;
+      column-gap: 6px !important;
+      row-gap: 3px !important;
       /* Opaque so sidebar tabs do not bleed through the list */
       background-color: var(--arrowpanel-background, Menu) !important;
       color: var(--arrowpanel-color, MenuText) !important;
@@ -199,18 +212,17 @@
       box-shadow:
         0 14px 34px rgba(0, 0, 0, 0.38),
         0 0 0 1px color-mix(in srgb, currentColor 14%, transparent) !important;
-      /* Zen scrolls a hovered Space into view; keep that instant, not animated */
-      scroll-behavior: auto !important;
-      overscroll-behavior: contain !important;
-      scrollbar-width: thin !important;
-      scrollbar-color: color-mix(in srgb, currentColor 35%, transparent) transparent !important;
-      scrollbar-gutter: stable !important;
     }
 
     #zen-workspaces-button:hover toolbarbutton,
     #zen-workspaces-button:focus-within toolbarbutton {
-      min-height: 34px !important;
+      width: auto !important;
+      min-width: 176px !important;
+      max-width: 260px !important;
+      min-height: 32px !important;
       padding: 6px 10px !important;
+      /* Keep Zen's own scroll hints from having any effect */
+      scroll-margin: 0 !important;
     }
 
     .zen-current-workspace-indicator {

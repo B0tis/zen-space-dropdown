@@ -63,7 +63,7 @@ $entry = [pscustomobject]@{
   readme      = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/README.md"
   image       = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/preview.png"
   author      = "B0tis"
-  version     = "1.2.0"
+  version     = "1.2.1"
   tags        = @("workspaces", "sidebar", "spaces")
   createdAt   = "2026-08-12"
   updatedAt   = (Get-Date -Format "yyyy-MM-dd")
@@ -107,4 +107,5 @@ Set-Content -Path $userJs -Value (($kept + $prefLines) -join "`n") -Encoding UTF
 
 Write-Host "Installed Space Dropdown."
 Write-Host "Restart Zen, or open Settings -> Mods and toggle the mod off/on."
+
 
