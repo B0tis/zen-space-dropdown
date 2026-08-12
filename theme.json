@@ -1,0 +1,19 @@
+{
+  "id": "a1c8e4f2-9b3d-4e7a-8f1c-2d6b5a9e0c44",
+  "name": "Space Dropdown",
+  "description": "Compact Spaces dropdown for expanded sidebar.",
+  "homepage": "https://github.com/B0tis/zen-space-dropdown",
+  "style": "chrome.css",
+  "readme": "README.md",
+  "image": "preview.png",
+  "author": "B0tis",
+  "version": "1.0.0",
+  "tags": [
+    "workspaces",
+    "sidebar",
+    "spaces"
+  ],
+  "createdAt": "2026-08-12",
+  "updatedAt": "2026-08-12",
+  "preferences": "preferences.json"
+}

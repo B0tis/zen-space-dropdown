@@ -12,20 +12,25 @@ Compact Spaces dropdown for Zen Browser’s **expanded sidebar**. Turns the crow
 - Matching polish for `#zenWorkspaceMoreActions` (right-click Space list)
 - Preferences for max height, names, radius, and active background
 
-## Install (Mods Registry)
+## Install
 
-1. Open Zen → Mods / Themes marketplace
-2. Install **Space Dropdown**
-3. Enable it and adjust preferences under Zen Settings → Mods
+### Import (recommended)
 
-## Local / development install
+1. Download [`space-dropdown.zen.json`](https://github.com/B0tis/zen-space-dropdown/blob/master/space-dropdown.zen.json)
+2. Open Zen → Settings → Mods
+3. Use **Import** and select the JSON file
+4. Enable **Space Dropdown** and adjust preferences
+
+### Local / development install
 
 1. Open `about:support` → **Profile Directory**
-2. Ensure `chrome/zen-themes/<mod-id>/` exists with:
+2. Copy files into `chrome/zen-themes/a1c8e4f2-9b3d-4e7a-8f1c-2d6b5a9e0c44/`:
    - `chrome.css`
    - `preferences.json`
 3. Register the mod in `zen-themes.json` (folder name must match `id`, and `preferences` must be truthy)
 4. Restart Zen, or disable/enable the mod in Settings → Mods
+
+> The official Mods Registry / theme-store is currently archived. This mod is distributed from GitHub until submissions reopen.
 
 ## Preferences
 
