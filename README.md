@@ -12,32 +12,34 @@ Compact Spaces dropdown for Zen Browser’s **expanded sidebar**. Turns the crow
 - Matching polish for `#zenWorkspaceMoreActions` (right-click Space list)
 - Preferences for max height, names, radius, and active background
 
-## Install
+## Install (Windows)
 
-### Import (recommended)
+Zen’s **Mods → Import** only installs mods that exist in the **official store**. It ignores the asset URLs in a local JSON file and looks up the mod ID online — so custom mods like this one cannot be imported that way.
 
-1. Download [`space-dropdown.zen.json`](https://github.com/B0tis/zen-space-dropdown/blob/master/space-dropdown.zen.json)
-2. Open Zen → Settings → Mods
-3. Use **Import** and select the JSON file
-4. Enable **Space Dropdown** and adjust preferences
+Use the installer instead:
 
-### Local / development install
+```powershell
+cd path\to\zen-space-dropdown
+powershell -ExecutionPolicy Bypass -File .\install.ps1
+```
+
+Then restart Zen, or open **Settings → Mods** and toggle **Space Dropdown** off/on.
+
+### Manual install
 
 1. Open `about:support` → **Profile Directory**
 2. Copy files into `chrome/zen-themes/a1c8e4f2-9b3d-4e7a-8f1c-2d6b5a9e0c44/`:
    - `chrome.css`
    - `preferences.json`
-3. Register the mod in `zen-themes.json` (folder name must match `id`, and `preferences` must be truthy)
+3. Add the mod entry from `space-dropdown.zen.json` into `zen-themes.json` (folder name must match `id`)
 4. Restart Zen, or disable/enable the mod in Settings → Mods
-
-> The official Mods Registry / theme-store is currently archived. This mod is distributed from GitHub until submissions reopen.
 
 ## Preferences
 
 | Preference | Type | Default | Purpose |
 |---|---|---|---|
 | `mod.space-dropdown.enabled` | checkbox | `true` | Master toggle |
-| `mod.space-dropdown.max_height` | string | `240px` | Max height of expanded list |
+| `mod.space-dropdown.max_height` | string | `280px` | Max height of expanded list |
 | `mod.space-dropdown.show_names` | checkbox | `true` | Show Space names |
 | `mod.space-dropdown.chip_radius` | string | `8px` | Corner radius |
 | `mod.space-dropdown.active_bg` | string | Accent mix | Active Space background |
@@ -52,4 +54,3 @@ Compact Spaces dropdown for Zen Browser’s **expanded sidebar**. Turns the crow
 ## License
 
 MIT
-

@@ -1,4 +1,4 @@
-# Install Space Dropdown into the active Zen profile (Windows).
+# Install Space Dropdown into the Zen profile that the browser actually launches (Windows).
 # Zen's Mods "Import" only works for official store mods — use this instead.
 
 $ErrorActionPreference = "Stop"
@@ -11,24 +11,29 @@ if (-not (Test-Path $profilesIni)) {
 }
 
 $ini = Get-Content $profilesIni
-$defaultPath = $null
-$pathMap = @{}
+$installDefault = $null
+$markedDefault = $null
 $current = $null
+$inInstall = $false
+$pathMap = @{}
+
 foreach ($line in $ini) {
-  if ($line -match '^\[(.+)\]') { $current = $Matches[1]; continue }
+  if ($line -match '^\[(.+)\]') {
+    $current = $Matches[1]
+    $inInstall = $current -like 'Install*'
+    continue
+  }
   if ($null -eq $current) { continue }
   if ($line -match '^Path=(.+)$') { $pathMap[$current] = $Matches[1] }
-  if ($line -match '^Default=1$' -and $current -like 'Profile*') {
-    $defaultPath = $pathMap[$current]
+  if ($inInstall -and $line -match '^Default=(.+)$') { $installDefault = $Matches[1] }
+  if (-not $inInstall -and $current -like 'Profile*' -and $line -match '^Default=1$') {
+    $markedDefault = $pathMap[$current]
   }
 }
-if (-not $defaultPath) {
-  # Fall back to Install Default=
-  foreach ($line in $ini) {
-    if ($line -match '^Default=Profiles/(.+)$') { $defaultPath = "Profiles/$($Matches[1])"; break }
-  }
-}
-if (-not $defaultPath) { throw "Could not resolve Zen profile path" }
+
+# Prefer the Install section path (what Zen opens), then Profile Default=1
+$defaultPath = if ($installDefault) { $installDefault } elseif ($markedDefault) { $markedDefault } else { $null }
+if (-not $defaultPath) { throw "Could not resolve Zen profile path from profiles.ini" }
 
 $profile = if ([System.IO.Path]::IsPathRooted($defaultPath)) {
   $defaultPath
@@ -58,7 +63,7 @@ $entry = [pscustomobject]@{
   readme      = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/README.md"
   image       = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/preview.png"
   author      = "B0tis"
-  version     = "1.1.0"
+  version     = "1.1.1"
   tags        = @("workspaces", "sidebar", "spaces")
   createdAt   = "2026-08-12"
   updatedAt   = (Get-Date -Format "yyyy-MM-dd")
@@ -96,9 +101,9 @@ $prefLines = @(
 )
 $kept = @()
 if (Test-Path $userJs) {
-  $kept = Get-Content $userJs | Where-Object { $_ -notmatch 'mod\.space-dropdown\.' }
+  $kept = @(Get-Content $userJs | Where-Object { $_ -notmatch 'mod\.space-dropdown\.' })
 }
 Set-Content -Path $userJs -Value (($kept + $prefLines) -join "`n") -Encoding UTF8
 
 Write-Host "Installed Space Dropdown."
-Write-Host "Restart Zen, or open Settings → Mods and toggle the mod off/on."
+Write-Host "Restart Zen, or open Settings -> Mods and toggle the mod off/on."
