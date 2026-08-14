@@ -63,7 +63,7 @@ $entry = [pscustomobject]@{
   readme      = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/README.md"
   image       = "https://raw.githubusercontent.com/B0tis/zen-space-dropdown/master/preview.png"
   author      = "B0tis"
-  version     = "1.4.0"
+  version     = "1.5.0"
   tags        = @("workspaces", "sidebar", "spaces")
   createdAt   = "2026-08-12"
   updatedAt   = (Get-Date -Format "yyyy-MM-dd")
@@ -91,22 +91,18 @@ foreach ($prop in $themes.PSObject.Properties) {
 }
 Set-Content -Path (Join-Path $chromeDir "zen-themes.css") -Value $sb.ToString() -Encoding UTF8
 
-# Ensure prefs exist
+# Drop any mod prefs an older version of this script pinned in user.js. user.js is
+# re-applied on every startup, so pinning them there silently reverted whatever the
+# user chose in Settings. Zen seeds the defaults from preferences.json instead.
 $userJs = Join-Path $profile "user.js"
-$prefLines = @(
-  'user_pref("mod.space-dropdown.enabled", true);',
-  'user_pref("mod.space-dropdown.show_names", true);',
-  'user_pref("mod.space-dropdown.max_height", "78vh");',
-  'user_pref("mod.space-dropdown.chip_radius", "8px");'
-)
-$kept = @()
 if (Test-Path $userJs) {
   $kept = @(Get-Content $userJs | Where-Object { $_ -notmatch 'mod\.space-dropdown\.' })
+  Set-Content -Path $userJs -Value ($kept -join "`n") -Encoding UTF8
 }
-Set-Content -Path $userJs -Value (($kept + $prefLines) -join "`n") -Encoding UTF8
 
 Write-Host "Installed Space Dropdown."
 Write-Host "Restart Zen, or open Settings -> Mods and toggle the mod off/on."
+
 
 
 

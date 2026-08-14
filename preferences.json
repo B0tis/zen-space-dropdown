@@ -7,10 +7,10 @@
   },
   {
     "property": "mod.space-dropdown.max_height",
-    "label": "Expanded list max height (e.g. 78vh or 420px)",
+    "label": "Ceiling for the expanded list height, columns are added past it (e.g. 80vh or 600px). Empty = 80vh",
     "type": "string",
-    "defaultValue": "78vh",
-    "placeholder": "78vh"
+    "defaultValue": "80vh",
+    "placeholder": "80vh"
   },
   {
     "property": "mod.space-dropdown.show_names",
