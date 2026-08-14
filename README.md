@@ -7,11 +7,11 @@ Compact Spaces dropdown for Zen Browser’s **expanded sidebar**. Turns the crow
 ## Features
 
 - Collapsed chip showing the active Space (optional name + chevron)
-- Hover / `:focus-within` expands a vertical Space list
-- Long lists grow into columns instead of a tall scrollport, so Zen's hover auto-scroll cannot make the list jump
+- Hover / `:focus-within` expands a vertical Space list that grows with the list (capped at ~80vh)
+- Past that cap, extra columns wrap instead of a tall scrollport, so Zen's hover auto-scroll cannot jump
 - Space names via `tooltiptext` when enabled
 - Matching polish for `#zenWorkspaceMoreActions` (right-click Space list)
-- Preferences for max height, names, radius, and active background
+- Preferences for names, radius, and active background
 
 ## Install (Windows)
 
@@ -40,7 +40,6 @@ Then restart Zen, or open **Settings → Mods** and toggle **Space Dropdown** of
 | Preference | Type | Default | Purpose |
 |---|---|---|---|
 | `mod.space-dropdown.enabled` | checkbox | `true` | Master toggle |
-| `mod.space-dropdown.max_height` | string | `80vh` | Ceiling for the list height; columns are added past it |
 | `mod.space-dropdown.show_names` | checkbox | `true` | Show Space names |
 | `mod.space-dropdown.chip_radius` | string | `8px` | Corner radius |
 | `mod.space-dropdown.active_bg` | string | Accent mix | Active Space background |

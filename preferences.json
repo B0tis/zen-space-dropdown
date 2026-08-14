@@ -6,13 +6,6 @@
     "defaultValue": true
   },
   {
-    "property": "mod.space-dropdown.max_height",
-    "label": "Ceiling for the expanded list height, columns are added past it (e.g. 80vh or 600px). Empty = 80vh",
-    "type": "string",
-    "defaultValue": "80vh",
-    "placeholder": "80vh"
-  },
-  {
     "property": "mod.space-dropdown.show_names",
     "label": "Show Space names in expanded list",
     "type": "checkbox",

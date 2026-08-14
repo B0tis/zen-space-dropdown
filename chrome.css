@@ -18,11 +18,9 @@
   :root {
     --sd-row-h: 30px;
     --sd-row-gap: 2px;
-    /* Vertical space one row occupies, used to size the panel to its content */
-    --sd-row-unit: calc(var(--sd-row-h) + var(--sd-row-gap));
     --sd-col-width: 200px;
-    /* The preference is a ceiling only; it never forces the panel to be taller */
-    --sd-max-h: var(--mod-space-dropdown-max_height, 80vh);
+    /* Grows with the list, then wraps. Not a user pref — those go stale. */
+    --sd-max-h: min(80vh, calc(100vh - 48px));
   }
 
   :root[zen-sidebar-expanded]:not([zen-single-toolbar]) {
@@ -202,26 +200,19 @@
       inset-inline-end: auto !important;
       bottom: 2px !important;
       width: max-content !important;
-      min-width: 0 !important;
+      min-width: calc(100% - 12px) !important;
       max-width: min(70vw, calc(4 * var(--sd-col-width) + 32px)) !important;
-      max-height: none !important;
+      height: min(max-content, var(--sd-max-h)) !important;
+      max-height: var(--sd-max-h) !important;
       padding: 6px !important;
-      /*
-       * Columns rather than one tall column. Wrapping needs a definite height,
-       * which the per-count rules below supply.
-       */
       flex-flow: column wrap !important;
       align-items: stretch !important;
       align-content: flex-start !important;
       justify-content: flex-start !important;
       gap: var(--sd-row-gap) !important;
       /*
-       * Vertical overflow is impossible here (wrapping breaks a long list into
-       * further columns instead of growing past the height), so Zen's hover
-       * scrollIntoView has no vertical range to drag. Anything left over
-       * overflows on the inline axis, which is the axis that call was written
-       * for: `inline: "nearest"` leaves an already-visible row where it is, and
-       * a vertical wheel still scrolls a horizontal-only scrollport.
+       * One column until the cap, then wrap. No vertical scrollport, so Zen's
+       * hover scrollIntoView({ inline: "nearest" }) has nothing to yank.
        */
       overflow-x: auto !important;
       overflow-y: clip !important;
@@ -240,91 +231,14 @@
 
     #zen-workspaces-button:hover toolbarbutton,
     #zen-workspaces-button:focus-within toolbarbutton {
-      /*
-       * Both axes are fixed: a percentage width would resolve against a
-       * max-content sized container, and the height keeps the panel sizing above
-       * predictable.
-       */
-      width: var(--sd-col-width) !important;
+      width: auto !important;
       min-width: var(--sd-col-width) !important;
-      max-width: var(--sd-col-width) !important;
+      max-width: none !important;
       height: var(--sd-row-h) !important;
       min-height: var(--sd-row-h) !important;
       padding: 0 9px !important;
       flex: 0 0 auto !important;
       scroll-margin: 0 !important;
-    }
-
-    /*
-     * Flex wrapping only happens against a definite height, so the panel is
-     * given one that matches its own row count, capped by the preference. Every
-     * rule below has equal specificity, so for a list of N Spaces the last
-     * matching rule (N) wins and the panel is exactly as tall as it needs to be
-     * - no empty space for short lists, and columns once the cap is reached.
-     */
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(1)) {
-      height: min(calc(1 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(2)) {
-      height: min(calc(2 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(3)) {
-      height: min(calc(3 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(4)) {
-      height: min(calc(4 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(5)) {
-      height: min(calc(5 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(6)) {
-      height: min(calc(6 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(7)) {
-      height: min(calc(7 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(8)) {
-      height: min(calc(8 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(9)) {
-      height: min(calc(9 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(10)) {
-      height: min(calc(10 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(11)) {
-      height: min(calc(11 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(12)) {
-      height: min(calc(12 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(13)) {
-      height: min(calc(13 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(14)) {
-      height: min(calc(14 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(15)) {
-      height: min(calc(15 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(16)) {
-      height: min(calc(16 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(17)) {
-      height: min(calc(17 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(18)) {
-      height: min(calc(18 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(19)) {
-      height: min(calc(19 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(20)) {
-      height: min(calc(20 * var(--sd-row-unit) + 12px), var(--sd-max-h)) !important;
-    }
-    /* Beyond 20 the cap is reached on any realistic window, so stop counting */
-    #zen-workspaces-button:is(:hover, :focus-within):has(> toolbarbutton:nth-child(21)) {
-      height: var(--sd-max-h) !important;
     }
 
     .zen-current-workspace-indicator {
